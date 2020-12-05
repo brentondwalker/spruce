@@ -1,5 +1,5 @@
 /*
- * $Id: spruce_rcv.c 975 2009-04-02 16:45:20Z jastr $
+ * $Id: spruce_rcv.c,v 1.7 2003/12/11 20:11:37 jastr Exp $
  *
  * This file is part of Spruce
  * Copyright (C) 2003 Jacob Strauss (jastr@lcs.mit.edu)
@@ -265,7 +265,7 @@ spruce_dump(char * filename){
     long storedgap=-1;
     long storedsize=-1;
     long storedtotpairs=-1;
-    struct timeval storedtime = {0,0};
+    struct timeval storedtime;
     long storedsendgap=-1;
     double sum = 0;
     int howmany = 0;
@@ -334,7 +334,7 @@ spruce_dump(char * filename){
   fclose(out);
   {
     long ret = (avg * capacity) / 1000;
-    fprintf(stderr, "availalble bandwidth: %ld Kbps\n", ret);
+    fprintf(stderr, "Available Bandwidth: %ld Kbps (\%ld Mbps)\n", ret, ret/1000);
     return ret;
   }
 
@@ -391,13 +391,11 @@ void tcp_control_read(){
   switch(cmd){
   case CONTROL_NOOP:
     ack = cmd | CONTROL_ACK;
-    if(write(tcp_control_socket,&ack,sizeof ack) < 0)
-		;
+    write(tcp_control_socket,&ack,sizeof ack);
     break;
   case CONTROL_EXIT:
     ack = cmd | CONTROL_ACK;
-    if(write(tcp_control_socket,&ack,sizeof ack) < 0)
-		;
+    write(tcp_control_socket,&ack,sizeof ack);
     close(tcp_control_socket);
     //printf("normal exit\n");
     exit(0);
@@ -408,10 +406,8 @@ void tcp_control_read(){
       long rate;
       rate = spruce_dump("spruce.log");
       rate = htonl(rate);
-      if(write(tcp_control_socket, &ack, sizeof ack) < 0)
-		  ;
-      if(write(tcp_control_socket, &rate, sizeof(long)))
-		  ;
+      write(tcp_control_socket, &ack, sizeof ack);
+      write(tcp_control_socket, &rate, sizeof(long));
     }
     
     break;

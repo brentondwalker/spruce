@@ -1,8 +1,8 @@
-Readme for Spruce version 0.2
+Readme for Spruce version 0.3
 
 Compiling:
 
-gmake
+gmake OR make
 
 To run:
 

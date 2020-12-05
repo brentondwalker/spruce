@@ -1,4 +1,5 @@
 CC = gcc
+#CFLAGS = -g -Wall -O2
 CFLAGS = -g -Wall -Werror -O2
 LDFLAGS = -lm
 INCLUDEDIRS = 

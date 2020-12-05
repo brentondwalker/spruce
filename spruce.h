@@ -1,5 +1,5 @@
 /*
- * $Id: spruce.h 530 2003-12-11 20:11:37Z jastr $
+ * $Id: spruce.h,v 1.5 2003/12/11 20:11:37 jastr Exp $
  *
  * This file is part of Spruce
  * Copyright (C) 2003 Jacob Strauss (jastr@lcs.mit.edu)

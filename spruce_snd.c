@@ -1,5 +1,5 @@
 /*
- * $Id: spruce_snd.c 975 2009-04-02 16:45:20Z jastr $
+ * $Id: spruce_snd.c,v 1.10 2003/12/11 20:11:37 jastr Exp $
  *
  * This file is part of Spruce
  * Copyright (C) 2003 Jacob Strauss (jastr@lcs.mit.edu)
@@ -315,7 +315,7 @@ void control_connect()
     perror("set flags:");
   }
 
-  //printf("sockets createsd\n");
+  //printf("sockets created\n");
 
   //connect control socket
   if(connect(tcp_control_socket,
@@ -342,10 +342,11 @@ void control_connect()
 	connect_failed=1;
       }
       if(n > 0){
-	socklen_t len=sizeof(e);
+	int len=sizeof(e);
 	if (getsockopt(tcp_control_socket,
-		       SOL_SOCKET, SO_ERROR, &e, &len) < 0)  {
+		       SOL_SOCKET, SO_ERROR, &e, (socklen_t *)&len) < 0)  {
 	  connect_failed=1;
+    fprintf(stderr,"failed to connect control socket\n");
 	}
       }
     }
@@ -358,8 +359,7 @@ void control_connect()
 
   //send a NOOP to sink, wait for response.
   cmd = CONTROL_NOOP;
-  if(write(tcp_control_socket,&cmd,sizeof(cmd)) < 0)
-	  ;
+  write(tcp_control_socket,&cmd,sizeof(cmd));
   FD_ZERO(&rset);
   FD_SET(tcp_control_socket,&rset);
  
@@ -389,8 +389,7 @@ void control_exit(){
 
   cmd = CONTROL_EXIT;
 
-  if(write(tcp_control_socket,&cmd,sizeof(cmd)) < 0)
-	  ;
+  write(tcp_control_socket,&cmd,sizeof(cmd));
   
   bzero(&timeout,sizeof(timeout));
   timeout.tv_sec = 20;
@@ -412,8 +411,7 @@ long get_spruce_rate(){
   {
     char cmd;
     cmd = CONTROL_SPRUCE_OUTPUT;
-    if(write(tcp_control_socket, &cmd, sizeof(cmd)) < 0)
-		;
+    write(tcp_control_socket, &cmd, sizeof(cmd));
   }
   
   //read the ack from the sink
